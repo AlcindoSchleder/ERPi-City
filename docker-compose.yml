@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: sige
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - ./database:/var/lib/postgresql/data
+  gunicorn:
+    image: erpicity
+    command: gunicorn -b 0.0.0.0:8000 erpicity.wsgi:application
+    environment:
+      - SECRET_KEY=0#pny4oox9s#+#5dkde25dj79b-o^sdbz4kiumg#e1qx3ky
+      - ALLOWED_HOSTS='gunicorn'
+      - DATABASE_URL=postgres://sige:pass@postgres/erp_icity
+    volumes:
+      - ./:/opt/erp/
+    links:
+      - postgres
+    working_dir: /opt/erp/
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./static/:/opt/erp/static/
+      - ./media/:/opt/erp/media/
+    ports:
+      - 80:80
+    links:
+      - gunicorn

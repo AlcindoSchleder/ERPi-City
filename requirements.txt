@@ -1,0 +1,12 @@
+https://github.com/AlcindoSchleder/geraldo/archive/master.zip
+https://github.com/AlcindoSchleder/PySIGNFe/archive/master.zip
+django
+dj-database-url
+python-decouple
+pytz
+reportlab
+six
+cryptography
+lxml
+pyOpenSSL<19.0.0
+signxml
